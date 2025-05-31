@@ -4,7 +4,7 @@ Inhibits linux input devices. See the [Linux Kernel Docs][linux-docs] for more i
 
 ## Motivation
 
-The original use case was to use `inhibitor` + [systemd][systemd.device] to disable
+The original use case was to pair `inhibitor` with [systemd][systemd.device] to disable
 my built-in keyboard whenever my bluetooth keyboard connects - something that I dearly
 missed coming from MacOS's [karabiner-elements][karabiner], as I require a split
 keyboard to avoid RSI. You can consult my exact [NixOS setup][nixos] if you're curious about
