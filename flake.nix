@@ -55,7 +55,7 @@
         };
 
         packages.inhibitor = myCrate;
-        packages.default = self.packages.inhibitor;
+        packages.default = myCrate;
 
         devShells.default = craneLib.devShell {
           # Inherit inputs from checks.
