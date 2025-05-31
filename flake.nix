@@ -54,7 +54,8 @@
           inherit myCrate;
         };
 
-        packages.default = myCrate;
+        packages.inhibitor = myCrate;
+        packages.default = self.packages.inhibitor;
 
         devShells.default = craneLib.devShell {
           # Inherit inputs from checks.
@@ -69,6 +70,10 @@
             cargo-deny
             cargo-expand
           ];
+        };
+
+        overlays.default = final: prev: {
+          inhibitor = myCrate;
         };
       });
 }
