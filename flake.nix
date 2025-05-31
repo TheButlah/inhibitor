@@ -4,10 +4,6 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
     crane = {
       url = "github:ipetkov/crane";
-      inputs = {
-        flake-utils.follows = "flake-utils";
-        nixpkgs.follows = "nixpkgs";
-      };
     };
     fenix = {
       url = "github:nix-community/fenix";
@@ -22,7 +18,10 @@
           inherit system;
           # overlays = [ (import rust-overlay) ];
         };
-        rustToolchain = fenix.packages.${system}.minimal.toolchain;
+        rustToolchain = fenix.packages.${system}.fromToolchainFile {
+          file = ./rust-toolchain.toml;
+          sha256 = "sha256-KUm16pHj+cRedf8vxs/Hd2YWxpOrWZ7UOrwhILdSJBU=";
+        };
         craneLib = (crane.mkLib pkgs).overrideToolchain (p: rustToolchain);
         # Common arguments can be set here to avoid repeating them later
         # Note: changes here will rebuild all dependency crates
@@ -65,8 +64,10 @@
           # MY_CUSTOM_DEVELOPMENT_VAR = "something else";
 
           # Extra inputs can be added here; cargo and rustc are provided by default.
-          packages = [
-            # pkgs.ripgrep
+          packages = with pkgs; [
+            ripgrep
+            cargo-deny
+            cargo-expand
           ];
         };
       });

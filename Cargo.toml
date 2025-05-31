@@ -1,6 +1,11 @@
 [package]
 name = "inhibitor"
-version = "0.1.0"
+version = "0.0.0"
+description = "Inhibits linux input devices"
 edition = "2024"
+repository = "https://github.com/TheButlah/inhibitor"
+license = "MIT-0 OR Apache-2.0"
+publish = false
 
 [dependencies]
+clap = { version = "4.5.39", features = ["derive"] }
