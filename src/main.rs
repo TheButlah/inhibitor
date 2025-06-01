@@ -5,10 +5,22 @@ use std::{
     process::ExitCode,
 };
 
-use clap::{Parser, Subcommand};
+use clap::{
+    Parser, Subcommand,
+    builder::{Styles, styling::AnsiColor},
+};
+use owo_colors::{OwoColorize, Stream::Stdout};
+
+fn clap_v3_styles() -> Styles {
+    Styles::styled()
+        .header(AnsiColor::Yellow.on_default())
+        .usage(AnsiColor::Green.on_default())
+        .literal(AnsiColor::Green.on_default())
+        .placeholder(AnsiColor::Green.on_default())
+}
 
 #[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
+#[command(version, about, long_about = None, styles=clap_v3_styles())]
 struct Args {
     #[command(subcommand)]
     cmds: Commands,
@@ -63,10 +75,14 @@ impl ListCommand {
                 .file_name()
                 .and_then(|n| prefix.join(n).join("device").canonicalize().ok());
             println!(
-                "Name: {}, Vendor ID: {}, Product ID: {}, Device Path: {}",
+                "{} {}, {} {:04x}, {} {:04x}, {} {}",
+                "Name:".if_supports_color(Stdout, |text| text.green()),
                 device.name().unwrap_or("??"),
+                "Vendor ID:".if_supports_color(Stdout, |text| text.green()),
                 device.input_id().vendor(),
+                "Product ID:".if_supports_color(Stdout, |text| text.green()),
                 device.input_id().product(),
+                "Device Path:".if_supports_color(Stdout, |text| text.green()),
                 device_path.unwrap_or_else(|| PathBuf::from("??")).display()
             );
         }
@@ -84,7 +100,7 @@ struct InhibitCommand {
 impl InhibitCommand {
     fn run(self) -> Result<(), ExitCode> {
         let mut iter = enumerate_with_filter(&self.filter);
-        let Some((path, device)) = iter.next() else {
+        let Some((path, _device)) = iter.next() else {
             eprintln!("could not find any devices matching the filter!");
             return Err(ExitCode::FAILURE);
         };

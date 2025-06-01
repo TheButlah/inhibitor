@@ -1,6 +1,6 @@
 [package]
 name = "inhibitor"
-version = "0.0.0"
+version = "0.0.1"
 description = "Inhibit linux input devices"
 edition = "2024"
 repository = "https://github.com/TheButlah/inhibitor"
@@ -9,3 +9,4 @@ license = "MIT-0 OR Apache-2.0"
 [dependencies]
 clap = { version = "4.5.39", features = ["derive"] }
 evdev = "0.13.1"
+owo-colors = { version = "4.2.1", features = ["supports-colors"] }
